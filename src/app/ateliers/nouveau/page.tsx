@@ -15,14 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  createWorkshopBook,
   GENRE_OPTIONS,
   INITIAL_WORKSHOP_FORM,
-  loadWorkshopBooks,
-  saveWorkshopBooks,
   type WorkshopFormState,
   type WorkshopStatus,
 } from "@/lib/ateliers";
+import { createStory, uploadCover } from "@/lib/ateliers-supabase";
 import { cn } from "@/lib/utils";
 
 const STATUS_OPTIONS: { value: WorkshopStatus; label: string; description: string }[] = [
@@ -67,10 +65,13 @@ export default function NewAtelierBookPage() {
     setForm((current) => ({ ...current, [key]: value }));
   }
 
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
   function handleCoverUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
-
+    setCoverFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       const result = typeof reader.result === "string" ? reader.result : "";
@@ -79,13 +80,34 @@ export default function NewAtelierBookPage() {
     reader.readAsDataURL(file);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setSubmitting(true);
 
-    const newBook = createWorkshopBook(form);
-    const nextBooks = [newBook, ...loadWorkshopBooks()];
-    saveWorkshopBooks(nextBooks);
-    router.push(`/ateliers/${newBook.id}`);
+    const storyId = await createStory({
+      title: form.title.trim(),
+      genre: form.genre,
+      status: form.status,
+      synopsis: form.synopsis.trim() || undefined,
+      authorName: form.authorName.trim() || undefined,
+      ambition: form.ambition || undefined,
+      tone: form.tone || undefined,
+      audience: form.audience || undefined,
+      universeNote: form.universeNote.trim() || undefined,
+      chapterCount: Number(form.chapterCount) || 0,
+    });
+
+    if (!storyId) { setSubmitting(false); return; }
+
+    if (coverFile) {
+      const url = await uploadCover(coverFile, storyId);
+      if (url) {
+        const { createClient } = await import("@/lib/supabase");
+        await createClient().from("stories").update({ cover_url: url }).eq("id", storyId);
+      }
+    }
+
+    router.push(`/ateliers/${storyId}`);
     router.refresh();
   }
 
@@ -322,9 +344,9 @@ export default function NewAtelierBookPage() {
                   <Link href="/ateliers" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto")}>
                     Annuler
                   </Link>
-                  <Button type="submit" size="lg" className="w-full bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto">
+                  <Button type="submit" size="lg" disabled={submitting} className="w-full bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto">
                     <Plus />
-                    Creer le livre
+                    {submitting ? "Creation..." : "Creer le livre"}
                   </Button>
                 </div>
               </div>

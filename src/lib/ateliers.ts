@@ -6,6 +6,7 @@ export interface WorkshopChapter {
   id: string;
   title: string;
   content: string;
+  is_published?: boolean;
 }
 
 export interface WorkshopCharacter {
@@ -30,6 +31,7 @@ export interface WorkshopBook {
   audience?: string;
   universeNote?: string;
   coverSeed?: string;
+  isPublished?: boolean;
   chapters: WorkshopChapter[];
   characters: WorkshopCharacter[];
 }
