@@ -160,10 +160,10 @@ export async function uploadCover(file: File, storyId: string): Promise<string |
   const ext = file.name.split(".").pop();
   const path = `${storyId}/cover.${ext}`;
 
-  const { error } = await supabase.storage.from("covers").upload(path, file, { upsert: true });
-  if (error) return null;
+  const { error } = await supabase.storage.from("couvertures").upload(path, file, { upsert: true });
+  if (error) { console.error("[uploadCover] error:", error); return null; }
 
-  const { data } = supabase.storage.from("covers").getPublicUrl(path);
+  const { data } = supabase.storage.from("couvertures").getPublicUrl(path);
   return data.publicUrl;
 }
 
