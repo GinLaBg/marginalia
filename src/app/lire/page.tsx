@@ -155,52 +155,56 @@ export default function LirePage() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
           >
             {filtered.map((story) => (
               <motion.div key={story.id} variants={cardVariants}>
-                <Link href={`/lire/${story.id}`} className="group block rounded-2xl border border-border bg-card hover:border-[var(--accent)]/40 transition-all hover:-translate-y-1 overflow-hidden shadow-sm">
-                  <div className="aspect-[2/3] w-full overflow-hidden">
+                <Link href={`/lire/${story.id}`} className="group flex gap-3 rounded-2xl border border-border bg-card hover:border-[var(--accent)]/40 transition-all hover:-translate-y-0.5 p-3 shadow-sm">
+                  {/* Cover */}
+                  <div className="w-16 shrink-0 overflow-hidden rounded-xl">
                     {story.cover_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={story.cover_url} alt={story.title} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
+                      <img src={story.cover_url} alt={story.title} className="aspect-[2/3] w-full object-cover transition-transform group-hover:scale-105" />
                     ) : (
-                      <GeneratedCover title={story.title} author={story.author_name ?? "Auteur"} size="lg" />
+                      <div className="aspect-[2/3] w-full">
+                        <GeneratedCover title={story.title} author={story.author_name ?? "Auteur"} size="sm" />
+                      </div>
                     )}
                   </div>
-                  <div className="p-4">
-                    <p className="font-serif text-lg leading-tight">{story.title}</p>
-                    {story.author_name && (
-                      <p className="mt-1 text-xs text-muted-foreground">par {story.author_name}</p>
-                    )}
-                    <div className="mt-3 flex items-center justify-between">
-                      <span className="rounded-full border border-border bg-secondary/50 px-2.5 py-0.5 text-[11px] text-muted-foreground">
-                        {story.genre}
-                      </span>
-                      <span className={cn(
-                        "rounded-full border px-2.5 py-0.5 text-[11px]",
-                        story.status === "finished"  ? "border-emerald-500/30 bg-emerald-500/8 text-emerald-600" :
-                        story.status === "rewriting" ? "border-blue-500/30 bg-blue-500/8 text-blue-600" :
-                        "border-amber-500/30 bg-amber-500/8 text-amber-600"
-                      )}>
-                        {story.status === "finished" ? "Terminé" : story.status === "rewriting" ? "En réécriture" : "En cours"}
-                      </span>
-                      {story.chapter_count === 1 && (
-                        <span className="text-[11px] text-muted-foreground">One-shot</span>
+
+                  {/* Info */}
+                  <div className="flex flex-1 min-w-0 flex-col justify-between py-0.5">
+                    <div>
+                      <p className="font-serif text-sm leading-snug line-clamp-2">{story.title}</p>
+                      {story.author_name && (
+                        <p className="mt-0.5 text-[11px] text-muted-foreground truncate">par {story.author_name}</p>
                       )}
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        <span className="rounded-full border border-border bg-secondary/50 px-2 py-0.5 text-[10px] text-muted-foreground">{story.genre}</span>
+                        <span className={cn(
+                          "rounded-full border px-2 py-0.5 text-[10px]",
+                          story.status === "finished"  ? "border-emerald-500/30 text-emerald-600" :
+                          story.status === "rewriting" ? "border-blue-500/30 text-blue-600" :
+                          "border-amber-500/30 text-amber-600"
+                        )}>
+                          {story.status === "finished" ? "Terminé" : story.status === "rewriting" ? "Réécriture" : "En cours"}
+                        </span>
+                        {story.chapter_count === 1 && <span className="text-[10px] text-muted-foreground">One-shot</span>}
+                      </div>
                     </div>
-                    <div className="mt-2.5 flex items-center gap-3">
-                      <span className={cn("flex items-center gap-1 text-[11px] font-medium", (story.rating_avg ?? 0) > 0 ? "text-amber-500" : "text-muted-foreground")}>
-                        <Star size={11} className={cn((story.rating_avg ?? 0) > 0 ? "fill-amber-400 text-amber-400" : "text-muted-foreground")} />
+
+                    {/* Stats */}
+                    <div className="mt-2 flex items-center gap-2.5">
+                      <span className={cn("flex items-center gap-0.5 text-[11px] font-medium", (story.rating_avg ?? 0) > 0 ? "text-amber-500" : "text-muted-foreground/60")}>
+                        <Star size={10} className={cn((story.rating_avg ?? 0) > 0 ? "fill-amber-400 text-amber-400" : "")} />
                         {(story.rating_avg ?? 0) > 0 ? (story.rating_avg ?? 0).toFixed(1) : "—"}
-                        {(story.rating_count ?? 0) > 0 && <span className="text-muted-foreground font-normal">({story.rating_count})</span>}
                       </span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <Eye size={11} />
+                      <span className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
+                        <Eye size={10} />
                         {(story.views ?? 0) >= 1000 ? `${((story.views ?? 0) / 1000).toFixed(1)}k` : (story.views ?? 0)}
                       </span>
-                      <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                        <Heart size={11} className={cn((story.likes_count ?? 0) > 0 ? "fill-rose-400 text-rose-400" : "")} />
+                      <span className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
+                        <Heart size={10} className={cn((story.likes_count ?? 0) > 0 ? "fill-rose-400 text-rose-400" : "")} />
                         {story.likes_count ?? 0}
                       </span>
                     </div>
