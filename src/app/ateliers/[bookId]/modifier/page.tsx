@@ -86,31 +86,34 @@ export default function ModifierAtelierPage() {
     if (!bookId) return;
     setSubmitting(true);
 
-    let coverUrl: string | undefined = undefined;
+    try {
+      let coverUrl: string | undefined = undefined;
 
-    // Upload new cover if a file was selected
-    if (coverFile) {
-      const url = await uploadCover(coverFile, bookId);
-      if (url) coverUrl = url;
-    }
+      // Upload new cover if a file was selected
+      if (coverFile) {
+        const url = await uploadCover(coverFile, bookId);
+        if (url) coverUrl = url;
+        else console.warn("[Modifier] Cover upload failed, continuing without cover");
+      }
 
-    const ok = await updateStory(bookId, {
-      title:       form.title.trim(),
-      genre:       form.genre,
-      status:      form.status,
-      synopsis:    form.synopsis.trim() || undefined,
-      authorName:  form.authorName.trim() || undefined,
-      ambition:    form.ambition || undefined,
-      tone:        form.tone || undefined,
-      audience:    form.audience || undefined,
-      universeNote: form.universeNote.trim() || undefined,
-      coverUrl:    coverUrl,
-    });
-    console.log("[Modifier] updateStory result:", ok);
+      await updateStory(bookId, {
+        title:       form.title.trim(),
+        genre:       form.genre,
+        status:      form.status,
+        synopsis:    form.synopsis.trim() || undefined,
+        authorName:  form.authorName.trim() || undefined,
+        ambition:    form.ambition || undefined,
+        tone:        form.tone || undefined,
+        audience:    form.audience || undefined,
+        universeNote: form.universeNote.trim() || undefined,
+        coverUrl:    coverUrl,
+      });
 
-    // If new cover was uploaded, update cover_url in stories
-    if (coverUrl) {
-      await createClient().from("stories").update({ cover_url: coverUrl }).eq("id", bookId);
+      if (coverUrl) {
+        await createClient().from("stories").update({ cover_url: coverUrl }).eq("id", bookId);
+      }
+    } catch (err) {
+      console.error("[Modifier] handleSubmit error:", err);
     }
 
     setSubmitting(false);
