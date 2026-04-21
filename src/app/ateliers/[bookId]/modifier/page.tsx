@@ -98,7 +98,7 @@ export default function ModifierAtelierPage() {
         const ext = coverFile.name.split(".").pop();
         const path = `${bookId}/cover.${ext}`;
         const { error: uploadError } = await supabase.storage
-          .from("couvertures")
+          .from("covers")
           .upload(path, coverFile, { upsert: true });
 
         if (uploadError) {
@@ -106,7 +106,7 @@ export default function ModifierAtelierPage() {
           setCoverError(`Erreur upload couverture: ${uploadError.message}`);
           hasError = true;
         } else {
-          const { data: urlData } = supabase.storage.from("couvertures").getPublicUrl(path);
+          const { data: urlData } = supabase.storage.from("covers").getPublicUrl(path);
           coverUrl = urlData.publicUrl;
           console.log("[Modifier] cover uploaded:", coverUrl);
         }
