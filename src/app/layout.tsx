@@ -80,6 +80,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://marginalia.app",
   },
+  verification: {
+    google: "BVWGbnJmGkxO-dfeC3sRokHImnfWDhfctmmET7XWrfc",
+  },
 };
 
 export const viewport: Viewport = {
