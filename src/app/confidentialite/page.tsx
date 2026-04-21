@@ -25,10 +25,10 @@ export default function ConfidentialitePage() {
             Le responsable du traitement des données personnelles collectées sur la plateforme <strong>Marginalia</strong> est :
           </p>
           <ul className="mt-3 space-y-1 list-none pl-0">
-            <li><strong>Responsable :</strong> Céleste Ciofani</li>
+            <li><strong>Responsable :</strong> Ning Cio</li>
             <li><strong>Email :</strong>{" "}
-              <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-                ciofani.celeste@icloud.com
+              <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+                Ning.cio@icloud.com
               </a>
             </li>
           </ul>
@@ -144,8 +144,8 @@ export default function ConfidentialitePage() {
           </ul>
           <p className="mt-4">
             Pour exercer ces droits, contactez-nous à :{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>
           </p>
           <p className="mt-3">
@@ -206,8 +206,8 @@ export default function ConfidentialitePage() {
           <h2 className="font-serif text-xl font-semibold mb-3">12. Contact</h2>
           <p>
             Pour toute question relative à vos données personnelles :{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>
           </p>
         </section>

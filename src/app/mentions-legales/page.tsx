@@ -23,11 +23,11 @@ export default function MentionsLegalesPage() {
             Le site <strong>Marginalia</strong> (accessible à l'adresse <strong>marginalia.app</strong>) est édité par :
           </p>
           <ul className="mt-3 space-y-1 list-none pl-0">
-            <li><strong>Responsable de publication :</strong> Céleste Ciofani</li>
+            <li><strong>Responsable de publication :</strong> Ning Cio</li>
             <li><strong>Statut :</strong> Particulier</li>
             <li><strong>Adresse email :</strong>{" "}
-              <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-                ciofani.celeste@icloud.com
+              <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+                Ning.cio@icloud.com
               </a>
             </li>
           </ul>
@@ -53,7 +53,7 @@ export default function MentionsLegalesPage() {
         <section>
           <h2 className="font-serif text-xl font-semibold mb-3">3. Propriété intellectuelle</h2>
           <p>
-            L'ensemble des éléments constituant le site Marginalia — structure, design, logo, code source, textes éditoriaux — est la propriété exclusive de Céleste Ciofani, sauf mention contraire.
+            L'ensemble des éléments constituant le site Marginalia — structure, design, logo, code source, textes éditoriaux — est la propriété exclusive de Ning Cio, sauf mention contraire.
           </p>
           <p className="mt-3">
             Toute reproduction, représentation, modification ou exploitation, totale ou partielle, sans autorisation écrite préalable est interdite et constitue une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
@@ -104,8 +104,8 @@ export default function MentionsLegalesPage() {
           <h2 className="font-serif text-xl font-semibold mb-3">8. Contact</h2>
           <p>
             Pour toute question ou réclamation, vous pouvez nous contacter à l'adresse suivante :{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>
           </p>
         </section>

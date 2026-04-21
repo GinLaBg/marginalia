@@ -20,7 +20,7 @@ export default function CguPage() {
         <section>
           <h2 className="font-serif text-xl font-semibold mb-3">1. Objet et acceptation</h2>
           <p>
-            Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») régissent l'accès et l'utilisation de la plateforme <strong>Marginalia</strong>, accessible à l'adresse <strong>marginalia.app</strong>, éditée par Céleste Ciofani.
+            Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») régissent l'accès et l'utilisation de la plateforme <strong>Marginalia</strong>, accessible à l'adresse <strong>marginalia.app</strong>, éditée par Ning Cio.
           </p>
           <p className="mt-3">
             En créant un compte ou en utilisant la plateforme, vous acceptez sans réserve l'intégralité des présentes CGU. Si vous n'acceptez pas ces conditions, vous devez vous abstenir d'utiliser Marginalia.
@@ -55,8 +55,8 @@ export default function CguPage() {
           <h3 className="font-medium mt-4 mb-2">3.2 Responsabilité du compte</h3>
           <p>
             Vous êtes seul responsable de la confidentialité de vos identifiants de connexion. Toute activité réalisée depuis votre compte vous est imputable. En cas de compromission, vous devez en informer Marginalia sans délai à l'adresse{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>.
           </p>
 
@@ -136,8 +136,8 @@ export default function CguPage() {
           <h3 className="font-medium mt-4 mb-2">6.3 Signalement</h3>
           <p>
             Tout utilisateur peut signaler un contenu qui lui semble inapproprié en contactant Marginalia à l'adresse{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>{" "}
             en précisant l'URL du contenu concerné et la raison du signalement. Marginalia s'engage à traiter les signalements dans les meilleurs délais.
           </p>
@@ -192,8 +192,8 @@ export default function CguPage() {
           <h2 className="font-serif text-xl font-semibold mb-3">12. Contact</h2>
           <p>
             Pour toute question relative aux présentes CGU ou pour signaler un contenu :{" "}
-            <a href="mailto:ciofani.celeste@icloud.com" className="text-[var(--accent)] hover:underline">
-              ciofani.celeste@icloud.com
+            <a href="mailto:Ning.cio@icloud.com" className="text-[var(--accent)] hover:underline">
+              Ning.cio@icloud.com
             </a>
           </p>
         </section>
