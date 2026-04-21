@@ -25,9 +25,61 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Marginalia — Lire · Écrire · Partager",
+  metadataBase: new URL("https://marginalia.app"),
+  title: {
+    default: "Marginalia – La plateforme littéraire francophone",
+    template: "%s — Marginalia",
+  },
   description:
-    "La plateforme littéraire francophone. Découvrez des livres, lisez des fictions communautaires, débattez et échangez.",
+    "Publie tes histoires, lis celles des autres et rejoins une communauté qui prend la littérature au sérieux. Marginalia, la plateforme francophone pour écrire et lire.",
+  keywords: [
+    "écriture créative",
+    "lecture en ligne",
+    "histoires francophones",
+    "fanfiction",
+    "roman",
+    "plateforme littéraire",
+    "publier des histoires",
+  ],
+  authors: [{ name: "Marginalia" }],
+  creator: "Marginalia",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://marginalia.app",
+    siteName: "Marginalia",
+    title: "Marginalia – La plateforme littéraire francophone",
+    description:
+      "Écris, publie et découvre des histoires gratuitement sur Marginalia.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Marginalia – La plateforme littéraire francophone",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Marginalia – La plateforme littéraire francophone",
+    description: "Écris, publie et découvre des histoires gratuitement.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://marginalia.app",
+  },
 };
 
 export const viewport: Viewport = {
