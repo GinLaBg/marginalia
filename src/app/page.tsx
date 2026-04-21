@@ -84,7 +84,7 @@ export default function HomePage() {
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
-              href="/inscription"
+              href="/auth/register"
               className={cn(buttonVariants({ size: "lg" }), "w-full border-transparent bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto")}
             >
               Rejoindre Marginalia <ArrowRight size={16} />
@@ -260,7 +260,7 @@ export default function HomePage() {
             Inscription gratuite. Pas d&apos;abonnement. Juste de la littérature.
           </p>
           <Link
-            href="/inscription"
+            href="/auth/register"
             className={cn(buttonVariants({ size: "lg" }), "bg-[var(--accent)] hover:bg-[var(--accent)]/90 text-white border-transparent")}
           >
             Créer mon compte <ArrowRight size={16} />

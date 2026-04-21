@@ -27,18 +27,18 @@ export function Footer() {
           <div>
             <p className="text-sm font-medium mb-3">Compte</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/inscription" className="hover:text-foreground transition-colors">S&apos;inscrire</Link></li>
-              <li><Link href="/connexion" className="hover:text-foreground transition-colors">Connexion</Link></li>
+              <li><Link href="/auth/register" className="hover:text-foreground transition-colors">S&apos;inscrire</Link></li>
+              <li><Link href="/auth/login" className="hover:text-foreground transition-colors">Connexion</Link></li>
               <li><Link href="/profil" className="hover:text-foreground transition-colors">Mon profil</Link></li>
             </ul>
           </div>
           <div>
             <p className="text-sm font-medium mb-3">Légal</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/cgu" className="hover:text-foreground transition-colors">CGU</Link></li>
-              <li><Link href="/mentions-legales" className="hover:text-foreground transition-colors">Mentions légales</Link></li>
-              <li><Link href="/confidentialite" className="hover:text-foreground transition-colors">Confidentialité</Link></li>
-              <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact</Link></li>
+              <li><span className="text-muted-foreground/40 cursor-default">CGU</span></li>
+              <li><span className="text-muted-foreground/40 cursor-default">Mentions légales</span></li>
+              <li><span className="text-muted-foreground/40 cursor-default">Confidentialité</span></li>
+              <li><span className="text-muted-foreground/40 cursor-default">Contact</span></li>
             </ul>
           </div>
         </div>
