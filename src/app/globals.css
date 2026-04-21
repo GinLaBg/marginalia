@@ -187,8 +187,14 @@
 
   body {
     @apply bg-background text-foreground min-h-screen;
-    /* overflow clip au lieu de hidden — ne crée pas de scroll container, safe sur iOS */
+    /* overflow-x: hidden = fallback universel (Safari ≤ 15) */
+    overflow-x: hidden;
+    /* overflow-x: clip = pas de scroll container (Safari 16+, Chrome, Firefox) */
     overflow-x: clip;
+    /* Safe area insets pour iPhone X+ en mode landscape (viewport-fit=cover) */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -212,4 +218,100 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* ─── Correctifs Safari / iOS Safari ─────────────────────────────────────── */
+
+  /*
+   * iOS Safari : empêche le zoom automatique à la mise au point sur les inputs.
+   * iOS zoome quand font-size < 16px — on force 16px minimum.
+   */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    font-size: max(16px, 1em);
+  }
+
+  /*
+   * iOS Safari : supprime le style natif (inner shadow, rounded pill)
+   * sur les inputs texte et textarea.
+   * NE pas appliquer sur checkbox/radio/select (casserait le rendu natif).
+   */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /*
+   * iOS Safari : retire le flash bleu sur tap sur les éléments interactifs.
+   */
+  a, button, [role="button"], input, select, textarea, label {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/*
+ * position: sticky avec préfixe -webkit- pour Safari ≤ 12.
+ * Tailwind v4 ne génère pas le préfixe — on le force ici.
+ */
+@layer utilities {
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/*
+ * aspect-ratio: 2/3 — fallback pour Safari 14 (iOS 14) qui ne supporte pas aspect-ratio.
+ * On ajoute la classe .book-cover-wrapper en complément dans le composant.
+ */
+.book-cover-wrapper {
+  aspect-ratio: 2 / 3;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+@supports not (aspect-ratio: 1) {
+  .book-cover-wrapper {
+    padding-top: 150%;   /* 3/2 = 150% — simule l'aspect ratio avec padding-top */
+    height: 0;
+  }
+  .book-cover-wrapper > * {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/*
+ * Safari < 16.4 : les propriétés CSS custom dans @keyframes ne s'animent pas.
+ * On définit des keyframes statiques de secours pour les animations critiques.
+ * tw-animate-css utilise --tw-enter-opacity etc. dans ses @keyframes.
+ */
+@keyframes safari-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes safari-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes safari-slide-in-right {
+  from { opacity: 0; transform: translateX(2.5rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes safari-slide-out-right {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(2.5rem); }
 }

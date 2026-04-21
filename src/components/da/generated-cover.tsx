@@ -79,7 +79,7 @@ export function GeneratedCover({
   return (
     <div
       className={`w-full h-full flex flex-col ${className}`}
-      style={{ backgroundColor: palette.bg, position: "relative", overflow: "hidden" }}
+      style={{ backgroundColor: palette.bg, position: "relative", overflow: "hidden", transform: "translateZ(0)" }}
     >
       {/* Motif décoratif — lignes fines */}
       <svg

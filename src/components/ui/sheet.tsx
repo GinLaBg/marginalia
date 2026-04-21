@@ -28,7 +28,8 @@ function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
     <SheetPrimitive.Backdrop
       data-slot="sheet-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/10 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-backdrop-filter:backdrop-blur-xs",
+        // bg-black/30 = fallback opaque Safari ≤ 14 (pas de backdrop-filter sans -webkit-)
+        "fixed inset-0 z-50 bg-black/30 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0 supports-[-webkit-backdrop-filter:blur(0)]:bg-black/10 supports-[-webkit-backdrop-filter:blur(0)]:[-webkit-backdrop-filter:blur(4px)] supports-backdrop-filter:bg-black/10 supports-backdrop-filter:backdrop-blur-xs",
         className
       )}
       {...props}

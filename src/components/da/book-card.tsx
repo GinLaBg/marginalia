@@ -53,8 +53,8 @@ export function BookCard({
       onClick={onClick}
       className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:border-[var(--accent)]/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
     >
-      {/* Couverture */}
-      <div className="relative aspect-[2/3] w-full overflow-hidden bg-muted">
+      {/* Couverture — .book-cover-wrapper inclut un fallback aspect-ratio pour Safari 14 */}
+      <div className="book-cover-wrapper bg-muted">
         {showGenerated ? (
           <div className="w-full h-full group-hover:scale-105 transition-transform duration-300">
             <GeneratedCover title={title} author={author} size="sm" />
