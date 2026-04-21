@@ -41,6 +41,7 @@ export default function ModifierAtelierPage() {
   const [form,       setForm]       = useState<WorkshopFormState>(EMPTY_FORM);
   const [coverFile,  setCoverFile]  = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [saved,      setSaved]      = useState(false);
   const [loading,    setLoading]    = useState(true);
 
   // Pre-fill form with existing story data
@@ -112,8 +113,13 @@ export default function ModifierAtelierPage() {
       await createClient().from("stories").update({ cover_url: coverUrl }).eq("id", bookId);
     }
 
-    router.push("/ateliers");
-    router.refresh();
+    setSubmitting(false);
+    setSaved(true);
+    setTimeout(() => {
+      setSaved(false);
+      router.push("/ateliers");
+      router.refresh();
+    }, 1500);
   }
 
   const previewTitle  = form.title.trim()      || "Ton livre";
@@ -268,9 +274,9 @@ export default function ModifierAtelierPage() {
                   <Link href="/ateliers" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto")}>
                     Annuler
                   </Link>
-                  <Button type="submit" size="lg" disabled={submitting} className="w-full bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto">
+                  <Button type="submit" size="lg" disabled={submitting || saved} className={cn("w-full sm:w-auto transition-all", saved ? "bg-emerald-500 hover:bg-emerald-500 text-white" : "bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90")}>
                     <Save size={16} />
-                    {submitting ? "Enregistrement..." : "Enregistrer"}
+                    {saved ? "Enregistré ✓" : submitting ? "Enregistrement..." : "Enregistrer"}
                   </Button>
                 </div>
               </div>
