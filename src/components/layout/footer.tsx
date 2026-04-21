@@ -35,9 +35,9 @@ export function Footer() {
           <div>
             <p className="text-sm font-medium mb-3">Légal</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><span className="text-muted-foreground/40 cursor-default">CGU</span></li>
-              <li><span className="text-muted-foreground/40 cursor-default">Mentions légales</span></li>
-              <li><span className="text-muted-foreground/40 cursor-default">Confidentialité</span></li>
+              <li><Link href="/cgu" className="hover:text-foreground transition-colors">CGU</Link></li>
+              <li><Link href="/mentions-legales" className="hover:text-foreground transition-colors">Mentions légales</Link></li>
+              <li><Link href="/confidentialite" className="hover:text-foreground transition-colors">Confidentialité</Link></li>
               <li><span className="text-muted-foreground/40 cursor-default">Contact</span></li>
             </ul>
           </div>
