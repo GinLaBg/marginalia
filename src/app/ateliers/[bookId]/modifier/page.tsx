@@ -13,7 +13,7 @@ import {
 import {
   GENRE_OPTIONS, type WorkshopFormState, type WorkshopStatus,
 } from "@/lib/ateliers";
-import { fetchStoryById, updateStory, uploadCover } from "@/lib/ateliers-supabase";
+import { fetchStoryById } from "@/lib/ateliers-supabase";
 import { createClient } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
@@ -38,11 +38,12 @@ export default function ModifierAtelierPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [form,       setForm]       = useState<WorkshopFormState>(EMPTY_FORM);
-  const [coverFile,  setCoverFile]  = useState<File | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [saved,      setSaved]      = useState(false);
-  const [loading,    setLoading]    = useState(true);
+  const [form,        setForm]       = useState<WorkshopFormState>(EMPTY_FORM);
+  const [coverFile,   setCoverFile]  = useState<File | null>(null);
+  const [submitting,  setSubmitting] = useState(false);
+  const [saved,       setSaved]      = useState(false);
+  const [loading,     setLoading]    = useState(true);
+  const [coverError,  setCoverError] = useState<string | null>(null);
 
   // Pre-fill form with existing story data
   useEffect(() => {
@@ -86,43 +87,68 @@ export default function ModifierAtelierPage() {
     if (!bookId) return;
     setSubmitting(true);
 
+    setCoverError(null);
+    const supabase = createClient();
+    let hasError = false;
     try {
       let coverUrl: string | undefined = undefined;
 
       // Upload new cover if a file was selected
       if (coverFile) {
-        const url = await uploadCover(coverFile, bookId);
-        if (url) coverUrl = url;
-        else console.warn("[Modifier] Cover upload failed, continuing without cover");
+        const ext = coverFile.name.split(".").pop();
+        const path = `${bookId}/cover.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from("couvertures")
+          .upload(path, coverFile, { upsert: true });
+
+        if (uploadError) {
+          console.error("[Modifier] uploadError:", uploadError);
+          setCoverError(`Erreur upload couverture: ${uploadError.message}`);
+          hasError = true;
+        } else {
+          const { data: urlData } = supabase.storage.from("couvertures").getPublicUrl(path);
+          coverUrl = urlData.publicUrl;
+          console.log("[Modifier] cover uploaded:", coverUrl);
+        }
       }
 
-      await updateStory(bookId, {
-        title:       form.title.trim(),
-        genre:       form.genre,
-        status:      form.status,
-        synopsis:    form.synopsis.trim() || undefined,
-        authorName:  form.authorName.trim() || undefined,
-        ambition:    form.ambition || undefined,
-        tone:        form.tone || undefined,
-        audience:    form.audience || undefined,
-        universeNote: form.universeNote.trim() || undefined,
-        coverUrl:    coverUrl,
-      });
+      const { error: updateError } = await supabase
+        .from("stories")
+        .update({
+          title:         form.title.trim(),
+          genre:         form.genre,
+          status:        form.status,
+          description:   form.synopsis.trim() || null,
+          author_name:   form.authorName.trim() || null,
+          ambition:      form.ambition || null,
+          tone:          form.tone || null,
+          audience:      form.audience || null,
+          universe_note: form.universeNote.trim() || null,
+          ...(coverUrl ? { cover_url: coverUrl } : {}),
+          updated_at:    new Date().toISOString(),
+        })
+        .eq("id", bookId);
 
-      if (coverUrl) {
-        await createClient().from("stories").update({ cover_url: coverUrl }).eq("id", bookId);
+      if (updateError) {
+        console.error("[Modifier] updateError:", updateError);
+        if (!hasError) setCoverError(`Erreur sauvegarde: ${updateError.message}`);
+        hasError = true;
       }
     } catch (err) {
       console.error("[Modifier] handleSubmit error:", err);
+      setCoverError(`Erreur inattendue: ${String(err)}`);
+      hasError = true;
     }
 
     setSubmitting(false);
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-      router.push("/ateliers");
-      router.refresh();
-    }, 1500);
+    if (!hasError) {
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+        router.push("/ateliers");
+        router.refresh();
+      }, 1500);
+    }
   }
 
   const previewTitle  = form.title.trim()      || "Ton livre";
@@ -268,6 +294,12 @@ export default function ModifierAtelierPage() {
                   className="min-h-28 rounded-xl border border-input bg-transparent px-3 py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
                 />
               </label>
+
+              {coverError && (
+                <div className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-400">
+                  ⚠️ {coverError}
+                </div>
+              )}
 
               <div className="flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <p className="max-w-md text-sm text-muted-foreground">
