@@ -31,6 +31,7 @@ const EMPTY_FORM: WorkshopFormState = {
   title: "", genre: "", status: "drafting", coverImage: "",
   synopsis: "", chapterCount: "", authorName: "",
   ambition: "", tone: "", audience: "", universeNote: "",
+  contentType: "original", fanfictionSource: "", rightsConfirmed: true,
 };
 
 export default function ModifierAtelierPage() {
@@ -62,6 +63,7 @@ export default function ModifierAtelierPage() {
         tone:        story.tone ?? "",
         audience:    story.audience ?? "",
         universeNote: story.universeNote ?? "",
+        contentType: "original", fanfictionSource: "", rightsConfirmed: true,
       });
       setLoading(false);
     });

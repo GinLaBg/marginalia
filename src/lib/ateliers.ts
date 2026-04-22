@@ -36,6 +36,8 @@ export interface WorkshopBook {
   characters: WorkshopCharacter[];
 }
 
+export type ContentType = "original" | "fanfiction";
+
 export interface WorkshopFormState {
   title: string;
   genre: string;
@@ -48,6 +50,9 @@ export interface WorkshopFormState {
   tone: string;
   audience: string;
   universeNote: string;
+  contentType: ContentType;
+  fanfictionSource: string; // "Titre — Auteur" si fanfiction
+  rightsConfirmed: boolean;
 }
 
 export const GENRE_OPTIONS = [
@@ -77,6 +82,9 @@ export const INITIAL_WORKSHOP_FORM: WorkshopFormState = {
   tone: "",
   audience: "",
   universeNote: "",
+  contentType: "original",
+  fanfictionSource: "",
+  rightsConfirmed: false,
 };
 
 export function loadWorkshopBooks(): WorkshopBook[] {

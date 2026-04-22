@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { ArrowLeft, BookOpenText, Compass, ImagePlus, Plus, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpenText, Compass, ImagePlus, Plus, Sparkles, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { GeneratedCover } from "@/components/da/generated-cover";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -19,6 +19,7 @@ import {
   INITIAL_WORKSHOP_FORM,
   type WorkshopFormState,
   type WorkshopStatus,
+  type ContentType,
 } from "@/lib/ateliers";
 import { createStory, uploadCover } from "@/lib/ateliers-supabase";
 import { cn } from "@/lib/utils";
@@ -84,6 +85,8 @@ export default function NewAtelierBookPage() {
     event.preventDefault();
     setSubmitting(true);
 
+    if (!form.rightsConfirmed) { setSubmitting(false); return; }
+
     const storyId = await createStory({
       title: form.title.trim(),
       genre: form.genre,
@@ -95,6 +98,8 @@ export default function NewAtelierBookPage() {
       audience: form.audience || undefined,
       universeNote: form.universeNote.trim() || undefined,
       chapterCount: Number(form.chapterCount) || 0,
+      contentType: form.contentType,
+      fanfictionSource: form.contentType === "fanfiction" ? form.fanfictionSource.trim() || undefined : undefined,
     });
 
     if (!storyId) { setSubmitting(false); return; }
@@ -336,6 +341,73 @@ export default function NewAtelierBookPage() {
                 />
               </label>
 
+              {/* ── Droits & type de contenu ─────────────────────────── */}
+              <div className="rounded-2xl border border-border bg-secondary/20 p-5 space-y-4">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <ShieldCheck size={15} className="text-[var(--accent)]" />
+                  Déclaration des droits
+                </div>
+
+                {/* Type : original ou fanfiction */}
+                <div className="grid grid-cols-2 gap-3">
+                  {([
+                    { value: "original",    label: "Œuvre originale",  desc: "Tu es l'auteur·e et tu détiens tous les droits." },
+                    { value: "fanfiction",  label: "Fanfiction",        desc: "Inspiré·e d'une œuvre existante." },
+                  ] as { value: ContentType; label: string; desc: string }[]).map(({ value, label, desc }) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => { updateField("contentType", value); updateField("rightsConfirmed", false); }}
+                      className={cn(
+                        "rounded-xl border p-3 text-left transition-all",
+                        form.contentType === value
+                          ? "border-[var(--accent)]/60 bg-[var(--accent)]/8 text-foreground"
+                          : "border-border text-muted-foreground hover:border-[var(--accent)]/30"
+                      )}
+                    >
+                      <p className="text-sm font-medium">{label}</p>
+                      <p className="mt-0.5 text-xs opacity-70">{desc}</p>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Si fanfiction : source obligatoire */}
+                {form.contentType === "fanfiction" && (
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                      Œuvre source *
+                    </label>
+                    <Input
+                      value={form.fanfictionSource}
+                      onChange={(e) => updateField("fanfictionSource", e.target.value)}
+                      placeholder="Ex : Harry Potter — J.K. Rowling"
+                      className="h-10"
+                      required={form.contentType === "fanfiction"}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Indique le titre de l'œuvre originale et son auteur·e.
+                    </p>
+                  </div>
+                )}
+
+                {/* Checkbox déclaration */}
+                <label className="flex cursor-pointer items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={form.rightsConfirmed}
+                    onChange={(e) => updateField("rightsConfirmed", e.target.checked)}
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--accent)]"
+                    required
+                  />
+                  <span className="text-sm text-muted-foreground leading-relaxed">
+                    {form.contentType === "original"
+                      ? "Je certifie être l'auteur·e de cette œuvre et en détenir l'intégralité des droits. Je m'engage à ne pas publier de contenu qui violerait les droits d'un tiers."
+                      : <>Je certifie que cette fanfiction est une œuvre dérivée <strong>non-commerciale</strong>, créée à titre de passion. Les droits sur l'œuvre originale appartiennent à leurs propriétaires respectifs. Je m'engage à ne pas reproduire de larges extraits du texte original.</>
+                    }
+                  </span>
+                </label>
+              </div>
+
               <div className="flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
                 <p className="max-w-md text-sm text-muted-foreground">
                   Une fois cree, ton livre s&apos;ouvre directement dans ton espace d&apos;ecriture pour commencer le chapitre 1.
@@ -344,7 +416,7 @@ export default function NewAtelierBookPage() {
                   <Link href="/ateliers" className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full sm:w-auto")}>
                     Annuler
                   </Link>
-                  <Button type="submit" size="lg" disabled={submitting} className="w-full bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto">
+                  <Button type="submit" size="lg" disabled={submitting || !form.rightsConfirmed || (form.contentType === "fanfiction" && !form.fanfictionSource.trim())} className="w-full bg-[var(--accent)] text-white hover:bg-[var(--accent)]/90 sm:w-auto disabled:opacity-50">
                     <Plus />
                     {submitting ? "Creation..." : "Creer le livre"}
                   </Button>

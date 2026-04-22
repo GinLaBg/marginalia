@@ -60,6 +60,8 @@ export async function createStory(data: {
   audience?: string;
   universeNote?: string;
   chapterCount?: number;
+  contentType?: string;
+  fanfictionSource?: string;
 }): Promise<string | null> {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -84,6 +86,8 @@ export async function createStory(data: {
       audience: data.audience ?? null,
       universe_note: data.universeNote ?? null,
       chapter_count: data.chapterCount ?? 0,
+      content_type: data.contentType ?? "original",
+      fanfiction_source: data.fanfictionSource ?? null,
       updated_at: new Date().toISOString(),
     })
     .select("id")
