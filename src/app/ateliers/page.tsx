@@ -10,18 +10,10 @@ import { formatWorkshopDate, type WorkshopBook, type WorkshopStatus } from "@/li
 import { fetchUserStories, updateStoryStatus } from "@/lib/ateliers-supabase";
 import { createClient } from "@/lib/supabase";
 
-const STATUS_META: Record<WorkshopStatus, {
+const STATUS_META: Partial<Record<WorkshopStatus, {
   title: string; description: string; icon: typeof PencilLine;
   accentClass: string; panelClass: string; emptyTitle: string; emptyBody: string;
-}> = {
-  ongoing: {
-    title: "En cours de publication",
-    description: "Histoires publiées et en cours de mise à jour.",
-    icon: BookOpenText, accentClass: "text-violet-600",
-    panelClass: "border-violet-200/70 bg-violet-50/60 dark:border-violet-900/40 dark:bg-violet-950/20",
-    emptyTitle: "Aucune histoire en cours",
-    emptyBody: "Les histoires publiées et en cours apparaîtront ici.",
-  },
+}>> = {
   drafting: {
     title: "En cours d\u2019écriture",
     description: "Tes projets vivants, en train de prendre forme.",
@@ -55,8 +47,8 @@ const STATUS_LABELS: Record<WorkshopStatus, string> = {
   rewriting: "Réécriture",
 };
 
-const STATUS_PILL: Record<WorkshopStatus, string> = {
-  ongoing: "border-violet-400/60 bg-violet-500/10 text-violet-600",
+const STATUS_PILL: Partial<Record<WorkshopStatus, string>> = {
+  ongoing: "border-amber-400/60 bg-amber-500/10 text-amber-600",
   drafting: "border-amber-400/60 bg-amber-500/10 text-amber-600",
   finished: "border-emerald-400/60 bg-emerald-500/10 text-emerald-600",
   rewriting: "border-blue-400/60 bg-blue-500/10 text-blue-600",
@@ -85,8 +77,7 @@ export default function AteliersPage() {
   }
 
   const booksByStatus = useMemo(() => ({
-    ongoing:  books.filter((b) => b.status === "ongoing"),
-    drafting: books.filter((b) => b.status === "drafting"),
+    drafting: books.filter((b) => b.status === "drafting" || b.status === "ongoing"),
     finished: books.filter((b) => b.status === "finished"),
     rewriting: books.filter((b) => b.status === "rewriting"),
   }), [books]);
@@ -126,7 +117,7 @@ export default function AteliersPage() {
 
       {loggedIn && (
         <div className="grid gap-6 lg:grid-cols-3">
-          {(["ongoing", "drafting", "finished", "rewriting"] as WorkshopStatus[]).map((status) => {
+          {(["drafting", "finished", "rewriting"] as WorkshopStatus[]).map((status) => {
             const meta = STATUS_META[status];
             const Icon = meta.icon;
             const sectionBooks = booksByStatus[status];
