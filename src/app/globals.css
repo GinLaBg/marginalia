@@ -1,0 +1,330 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Marginalia Design Tokens ─────────────────────────────────────────────── */
+
+@theme inline {
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-lora);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-lora);
+
+  /* Colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Accent colors (6 choices) */
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-green: var(--accent-green);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-rose: var(--accent-rose);
+  --color-accent-red: var(--accent-red);
+  --color-accent-yellow: var(--accent-yellow);
+
+  /* Radius — légèrement arrondi */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* ─── Mode Jour ─────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Hex fallbacks for browsers without oklch support */
+  --background: #fafaf9;
+  --foreground: #1e1e2e;
+  --card: #ffffff;
+  --card-foreground: #1e1e2e;
+  --popover: #ffffff;
+  --popover-foreground: #1e1e2e;
+  --primary: #1e1e2e;
+  --primary-foreground: #fafaf9;
+  --secondary: #f4f4f2;
+  --secondary-foreground: #2e2e3e;
+  --muted: #f4f4f2;
+  --muted-foreground: #737380;
+  --accent-foreground: #fafaf9;
+  --destructive: #e53e3e;
+  --border: #e5e5e2;
+  --input: #e5e5e2;
+  --radius: 0.5rem;
+  --accent-violet: #7c3aed;
+  --accent-green: #16a34a;
+  --accent-blue: #2563eb;
+  --accent-rose: #e879a0;
+  --accent-red: #dc2626;
+  --accent-yellow: #ca8a04;
+  --accent: var(--accent-violet);
+  --ring: var(--accent-violet);
+}
+
+@supports (color: oklch(0 0 0)) {
+  :root {
+    --background: oklch(0.99 0.002 90);
+    --foreground: oklch(0.15 0.01 260);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.15 0.01 260);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.15 0.01 260);
+    --primary: oklch(0.15 0.01 260);
+    --primary-foreground: oklch(0.99 0.002 90);
+    --secondary: oklch(0.96 0.004 90);
+    --secondary-foreground: oklch(0.25 0.01 260);
+    --muted: oklch(0.96 0.004 90);
+    --muted-foreground: oklch(0.5 0.01 260);
+    --accent-foreground: oklch(0.99 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: oklch(0.91 0.006 90);
+    --input: oklch(0.91 0.006 90);
+    --accent-violet: oklch(0.55 0.22 295);
+    --accent-green: oklch(0.55 0.18 145);
+    --accent-blue: oklch(0.55 0.18 240);
+    --accent-rose: oklch(0.65 0.2 355);
+    --accent-red: oklch(0.55 0.22 25);
+    --accent-yellow: oklch(0.75 0.18 85);
+  }
+}
+
+/* ─── Mode Nuit ─────────────────────────────────────────────────────────────── */
+
+.dark {
+  /* Hex fallbacks */
+  --background: #16161f;
+  --foreground: #f2f2ef;
+  --card: #1e1e28;
+  --card-foreground: #f2f2ef;
+  --popover: #1e1e28;
+  --popover-foreground: #f2f2ef;
+  --primary: #f2f2ef;
+  --primary-foreground: #1e1e28;
+  --secondary: #2a2a35;
+  --secondary-foreground: #f2f2ef;
+  --muted: #2a2a35;
+  --muted-foreground: #8888a0;
+  --accent-foreground: #fafaf9;
+  --destructive: #fc8181;
+  --border: rgba(255,255,255,0.08);
+  --input: rgba(255,255,255,0.12);
+  --accent-violet: #9f6ef5;
+  --accent-green: #4ade80;
+  --accent-blue: #60a5fa;
+  --accent-rose: #f472b6;
+  --accent-red: #f87171;
+  --accent-yellow: #fbbf24;
+}
+
+@supports (color: oklch(0 0 0)) {
+  .dark {
+    --background: oklch(0.12 0.01 260);
+    --foreground: oklch(0.95 0.005 90);
+    --card: oklch(0.16 0.01 260);
+    --card-foreground: oklch(0.95 0.005 90);
+    --popover: oklch(0.16 0.01 260);
+    --popover-foreground: oklch(0.95 0.005 90);
+    --primary: oklch(0.95 0.005 90);
+    --primary-foreground: oklch(0.16 0.01 260);
+    --secondary: oklch(0.22 0.01 260);
+    --secondary-foreground: oklch(0.95 0.005 90);
+    --muted: oklch(0.22 0.01 260);
+    --muted-foreground: oklch(0.6 0.01 260);
+    --accent-foreground: oklch(0.99 0 0);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 8%);
+    --input: oklch(1 0 0 / 12%);
+    --accent-violet: oklch(0.65 0.22 295);
+    --accent-green: oklch(0.65 0.18 145);
+    --accent-blue: oklch(0.65 0.18 240);
+    --accent-rose: oklch(0.72 0.2 355);
+    --accent-red: oklch(0.65 0.22 25);
+    --accent-yellow: oklch(0.8 0.18 85);
+  }
+}
+
+/* ─── Thèmes d'accent (classes sur <html>) ───────────────────────────────── */
+
+.theme-violet  { --accent: var(--accent-violet); --ring: var(--accent-violet); }
+.theme-indigo  { --accent: #4f46e5;              --ring: #4f46e5;              }
+.theme-green   { --accent: var(--accent-green);  --ring: var(--accent-green);  }
+.theme-emerald { --accent: #059669;              --ring: #059669;              }
+.theme-blue    { --accent: var(--accent-blue);   --ring: var(--accent-blue);   }
+.theme-sky     { --accent: #0ea5e9;              --ring: #0ea5e9;              }
+.theme-rose    { --accent: var(--accent-rose);   --ring: var(--accent-rose);   }
+.theme-red     { --accent: var(--accent-red);    --ring: var(--accent-red);    }
+.theme-yellow  { --accent: var(--accent-yellow); --ring: var(--accent-yellow); }
+.theme-amber   { --accent: #d97706;              --ring: #d97706;              }
+
+/* ─── Variantes de fond (classes sur <html>) ─────────────────────────────── */
+/* S'appliquent uniquement en mode sombre (.dark) */
+
+.dark.fond-noir  { --background: #0d0d0f; --card: #141416; --popover: #141416; }
+.dark.fond-bleu  { --background: #0d1117; --card: #141b22; --popover: #141b22; }
+.dark.fond-prune { --background: #100d14; --card: #19121e; --popover: #19121e; }
+.dark.fond-encre { --background: #0f0d0b; --card: #181510; --popover: #181510; }
+.dark.fond-foret { --background: #0c0f0d; --card: #131814; --popover: #131814; }
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply font-sans antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-text-size-adjust: 100%;
+    /* NE PAS mettre overflow-x:hidden sur html — casse les touch events iOS Safari */
+  }
+
+  body {
+    @apply bg-background text-foreground min-h-screen;
+    /* overflow-x: hidden = fallback universel (Safari ≤ 15) */
+    overflow-x: hidden;
+    /* overflow-x: clip = pas de scroll container (Safari 16+, Chrome, Firefox) */
+    overflow-x: clip;
+    /* Safe area insets pour iPhone X+ en mode landscape (viewport-fit=cover) */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+
+  /* Transitions fluides sur les éléments interactifs */
+  a, button, [role="button"] {
+    @apply transition-all duration-150;
+  }
+
+  /* Focus visible pour navigation clavier */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring rounded-sm;
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ─── Correctifs Safari / iOS Safari ─────────────────────────────────────── */
+
+  /*
+   * iOS Safari : empêche le zoom automatique à la mise au point sur les inputs.
+   * iOS zoome quand font-size < 16px — on force 16px minimum.
+   */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    font-size: max(16px, 1em);
+  }
+
+  /*
+   * iOS Safari : supprime le style natif (inner shadow, rounded pill)
+   * sur les inputs texte et textarea.
+   * NE pas appliquer sur checkbox/radio/select (casserait le rendu natif).
+   */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="url"],
+  textarea {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /*
+   * iOS Safari : retire le flash bleu sur tap sur les éléments interactifs.
+   */
+  a, button, [role="button"], input, select, textarea, label {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/*
+ * position: sticky avec préfixe -webkit- pour Safari ≤ 12.
+ * Tailwind v4 ne génère pas le préfixe — on le force ici.
+ */
+@layer utilities {
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/*
+ * aspect-ratio: 2/3 — fallback pour Safari 14 (iOS 14) qui ne supporte pas aspect-ratio.
+ * On ajoute la classe .book-cover-wrapper en complément dans le composant.
+ */
+.book-cover-wrapper {
+  aspect-ratio: 2 / 3;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+@supports not (aspect-ratio: 1) {
+  .book-cover-wrapper {
+    padding-top: 150%;   /* 3/2 = 150% — simule l'aspect ratio avec padding-top */
+    height: 0;
+  }
+  .book-cover-wrapper > * {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/*
+ * Safari < 16.4 : les propriétés CSS custom dans @keyframes ne s'animent pas.
+ * On définit des keyframes statiques de secours pour les animations critiques.
+ * tw-animate-css utilise --tw-enter-opacity etc. dans ses @keyframes.
+ */
+@keyframes safari-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes safari-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes safari-slide-in-right {
+  from { opacity: 0; transform: translateX(2.5rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes safari-slide-out-right {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(2.5rem); }
+}
