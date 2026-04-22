@@ -10,7 +10,7 @@ import { formatWorkshopDate, type WorkshopBook, type WorkshopStatus } from "@/li
 import { fetchUserStories, updateStoryStatus } from "@/lib/ateliers-supabase";
 import { createClient } from "@/lib/supabase";
 
-const STATUS_META: Partial<Record<WorkshopStatus, {
+const STATUS_META: Record<string, {
   title: string; description: string; icon: typeof PencilLine;
   accentClass: string; panelClass: string; emptyTitle: string; emptyBody: string;
 }>> = {
@@ -47,7 +47,7 @@ const STATUS_LABELS: Record<WorkshopStatus, string> = {
   rewriting: "Réécriture",
 };
 
-const STATUS_PILL: Partial<Record<WorkshopStatus, string>> = {
+const STATUS_PILL: Record<string, string> = {
   ongoing: "border-amber-400/60 bg-amber-500/10 text-amber-600",
   drafting: "border-amber-400/60 bg-amber-500/10 text-amber-600",
   finished: "border-emerald-400/60 bg-emerald-500/10 text-emerald-600",
