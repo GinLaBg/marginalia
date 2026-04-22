@@ -13,7 +13,7 @@ import { createClient } from "@/lib/supabase";
 const STATUS_META: Record<string, {
   title: string; description: string; icon: typeof PencilLine;
   accentClass: string; panelClass: string; emptyTitle: string; emptyBody: string;
-}>> = {
+}> = {
   drafting: {
     title: "En cours d\u2019écriture",
     description: "Tes projets vivants, en train de prendre forme.",
