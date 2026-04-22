@@ -117,7 +117,7 @@ export default function AteliersPage() {
 
       {loggedIn && (
         <div className="grid gap-6 lg:grid-cols-3">
-          {(["drafting", "finished", "rewriting"] as WorkshopStatus[]).map((status) => {
+          {(["drafting", "finished", "rewriting"] as const).map((status) => {
             const meta = STATUS_META[status];
             const Icon = meta.icon;
             const sectionBooks = booksByStatus[status];
