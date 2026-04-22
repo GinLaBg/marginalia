@@ -14,39 +14,49 @@ const STATUS_META: Record<WorkshopStatus, {
   title: string; description: string; icon: typeof PencilLine;
   accentClass: string; panelClass: string; emptyTitle: string; emptyBody: string;
 }> = {
+  ongoing: {
+    title: "En cours de publication",
+    description: "Histoires publiées et en cours de mise à jour.",
+    icon: BookOpenText, accentClass: "text-violet-600",
+    panelClass: "border-violet-200/70 bg-violet-50/60 dark:border-violet-900/40 dark:bg-violet-950/20",
+    emptyTitle: "Aucune histoire en cours",
+    emptyBody: "Les histoires publiées et en cours apparaîtront ici.",
+  },
   drafting: {
-    title: "En cours d\u2019ecriture",
+    title: "En cours d\u2019écriture",
     description: "Tes projets vivants, en train de prendre forme.",
     icon: PencilLine, accentClass: "text-amber-600",
     panelClass: "border-amber-200/70 bg-amber-50/60 dark:border-amber-900/40 dark:bg-amber-950/20",
     emptyTitle: "Aucun livre en cours",
-    emptyBody: "Commence un nouveau manuscrit pour le voir apparaitre ici.",
+    emptyBody: "Commence un nouveau manuscrit pour le voir apparaître ici.",
   },
   finished: {
-    title: "Livres termines",
-    description: "Les manuscrits finalises et prets a etre relus.",
+    title: "Livres terminés",
+    description: "Les manuscrits finalisés et prêts à être relus.",
     icon: BookCheck, accentClass: "text-emerald-600",
     panelClass: "border-emerald-200/70 bg-emerald-50/60 dark:border-emerald-900/40 dark:bg-emerald-950/20",
-    emptyTitle: "Aucun livre termine",
-    emptyBody: "Quand un projet sera boucle, il arrivera dans cette section.",
+    emptyTitle: "Aucun livre terminé",
+    emptyBody: "Quand un projet sera bouclé, il arrivera dans cette section.",
   },
   rewriting: {
-    title: "En reecriture",
+    title: "En réécriture",
     description: "Les versions que tu retravailles chapitre par chapitre.",
     icon: BookCopy, accentClass: "text-blue-600",
     panelClass: "border-blue-200/70 bg-blue-50/60 dark:border-blue-900/40 dark:bg-blue-950/20",
-    emptyTitle: "Aucune reecriture en cours",
-    emptyBody: "Les projets en revision apparaitront ici.",
+    emptyTitle: "Aucune réécriture en cours",
+    emptyBody: "Les projets en révision apparaîtront ici.",
   },
 };
 
 const STATUS_LABELS: Record<WorkshopStatus, string> = {
-  drafting: "En cours",
+  ongoing: "En cours",
+  drafting: "Brouillon",
   finished: "Terminé",
   rewriting: "Réécriture",
 };
 
 const STATUS_PILL: Record<WorkshopStatus, string> = {
+  ongoing: "border-violet-400/60 bg-violet-500/10 text-violet-600",
   drafting: "border-amber-400/60 bg-amber-500/10 text-amber-600",
   finished: "border-emerald-400/60 bg-emerald-500/10 text-emerald-600",
   rewriting: "border-blue-400/60 bg-blue-500/10 text-blue-600",
@@ -75,6 +85,7 @@ export default function AteliersPage() {
   }
 
   const booksByStatus = useMemo(() => ({
+    ongoing:  books.filter((b) => b.status === "ongoing"),
     drafting: books.filter((b) => b.status === "drafting"),
     finished: books.filter((b) => b.status === "finished"),
     rewriting: books.filter((b) => b.status === "rewriting"),
@@ -115,7 +126,7 @@ export default function AteliersPage() {
 
       {loggedIn && (
         <div className="grid gap-6 lg:grid-cols-3">
-          {(["drafting", "finished", "rewriting"] as WorkshopStatus[]).map((status) => {
+          {(["ongoing", "drafting", "finished", "rewriting"] as WorkshopStatus[]).map((status) => {
             const meta = STATUS_META[status];
             const Icon = meta.icon;
             const sectionBooks = booksByStatus[status];

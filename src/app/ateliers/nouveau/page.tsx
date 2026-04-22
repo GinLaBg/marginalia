@@ -25,9 +25,10 @@ import { createStory, uploadCover } from "@/lib/ateliers-supabase";
 import { cn } from "@/lib/utils";
 
 const STATUS_OPTIONS: { value: WorkshopStatus; label: string; description: string }[] = [
-  { value: "drafting", label: "En cours d'ecriture", description: "Pour les projets vivants et encore en construction." },
-  { value: "finished", label: "Termine", description: "Pour les manuscrits boucles et prets a etre relus." },
-  { value: "rewriting", label: "En reecriture", description: "Pour les textes que tu reprends en profondeur." },
+  { value: "ongoing",   label: "En cours",            description: "Histoire en cours de publication." },
+  { value: "drafting",  label: "En cours d'écriture",  description: "Pour les projets vivants et encore en construction." },
+  { value: "finished",  label: "Terminé",              description: "Pour les manuscrits bouclés et prêts à être relus." },
+  { value: "rewriting", label: "En réécriture",        description: "Pour les textes que tu reprends en profondeur." },
 ];
 
 const AMBITION_OPTIONS = [

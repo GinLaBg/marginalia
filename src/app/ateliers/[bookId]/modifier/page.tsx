@@ -18,9 +18,10 @@ import { createClient } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
 const STATUS_OPTIONS: { value: WorkshopStatus; label: string }[] = [
-  { value: "drafting",  label: "En cours d'ecriture" },
-  { value: "finished",  label: "Termine" },
-  { value: "rewriting", label: "En reecriture" },
+  { value: "ongoing",   label: "En cours" },
+  { value: "drafting",  label: "En cours d'écriture" },
+  { value: "finished",  label: "Terminé" },
+  { value: "rewriting", label: "En réécriture" },
 ];
 
 const AMBITION_OPTIONS = ["Roman court", "Roman", "Saga", "Novella", "Recueil"];
@@ -49,24 +50,34 @@ export default function ModifierAtelierPage() {
   // Pre-fill form with existing story data
   useEffect(() => {
     if (!bookId) return;
-    fetchStoryById(bookId).then((story) => {
-      if (!story) { router.replace("/ateliers"); return; }
-      setForm({
-        title:       story.title,
-        genre:       story.genre,
-        status:      story.status,
-        coverImage:  story.coverImage ?? "",
-        synopsis:    story.synopsis ?? "",
-        chapterCount: String(story.chapterCount ?? ""),
-        authorName:  story.authorName ?? "",
-        ambition:    story.ambition ?? "",
-        tone:        story.tone ?? "",
-        audience:    story.audience ?? "",
-        universeNote: story.universeNote ?? "",
-        contentType: "original", fanfictionSource: "", rightsConfirmed: true,
+    fetchStoryById(bookId)
+      .then((story) => {
+        if (!story) { router.replace("/ateliers"); return; }
+        // Normalise status: "ongoing" → "ongoing", unknown → "drafting"
+        const validStatuses = ["drafting", "finished", "rewriting", "ongoing"] as WorkshopStatus[];
+        const safeStatus: WorkshopStatus = validStatuses.includes(story.status as WorkshopStatus)
+          ? (story.status as WorkshopStatus)
+          : "drafting";
+        setForm({
+          title:        story.title,
+          genre:        story.genre,
+          status:       safeStatus,
+          coverImage:   story.coverImage ?? "",
+          synopsis:     story.synopsis ?? "",
+          chapterCount: String(story.chapterCount ?? ""),
+          authorName:   story.authorName ?? "",
+          ambition:     story.ambition ?? "",
+          tone:         story.tone ?? "",
+          audience:     story.audience ?? "",
+          universeNote: story.universeNote ?? "",
+          contentType: "original", fanfictionSource: "", rightsConfirmed: true,
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("[Modifier] fetchStoryById error:", err);
+        setLoading(false);
       });
-      setLoading(false);
-    });
   }, [bookId, router]);
 
   function updateField<K extends keyof WorkshopFormState>(key: K, value: WorkshopFormState[K]) {

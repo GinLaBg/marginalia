@@ -1,6 +1,6 @@
 export const ATELIERS_STORAGE_KEY = "marginalia-ateliers-books";
 
-export type WorkshopStatus = "drafting" | "finished" | "rewriting";
+export type WorkshopStatus = "drafting" | "finished" | "rewriting" | "ongoing";
 
 export interface WorkshopChapter {
   id: string;
