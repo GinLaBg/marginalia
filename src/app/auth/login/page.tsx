@@ -13,23 +13,38 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [unconfirmed, setUnconfirmed] = useState(false);
+  const [resent, setResent] = useState(false);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    setUnconfirmed(false);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      setError("Email ou mot de passe incorrect.");
+      if (error.message.toLowerCase().includes("email not confirmed") || error.message.toLowerCase().includes("not confirmed")) {
+        setUnconfirmed(true);
+        setError(null);
+      } else {
+        setError("Email ou mot de passe incorrect.");
+      }
       setLoading(false);
       return;
     }
 
     router.push("/");
     router.refresh();
+  }
+
+  async function resendConfirmation() {
+    if (!email) return;
+    const supabase = createClient();
+    await supabase.auth.resend({ type: "signup", email });
+    setResent(true);
   }
 
   return (
@@ -83,6 +98,20 @@ export default function LoginPage() {
 
           {error && (
             <p className="text-red-500 text-sm">{error}</p>
+          )}
+
+          {unconfirmed && (
+            <div className="rounded-lg border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-600 dark:text-amber-400">
+              <p className="font-medium mb-1">Email non confirmé</p>
+              <p className="text-xs mb-2">Tu dois cliquer sur le lien envoyé à <strong>{email}</strong> avant de pouvoir te connecter. Vérifie tes spams.</p>
+              {resent ? (
+                <p className="text-xs text-emerald-600 dark:text-emerald-400">✓ Email renvoyé !</p>
+              ) : (
+                <button type="button" onClick={resendConfirmation} className="text-xs underline hover:no-underline">
+                  Renvoyer l&apos;email de confirmation
+                </button>
+              )}
+            </div>
           )}
 
           <button
